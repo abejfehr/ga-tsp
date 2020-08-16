@@ -11,8 +11,7 @@ export const calculateDistance = (a, b) => {
   return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
 };
 
-export const drawGraph = (canvas, graph, inverse = false) => {
-  console.log("A graph is being drawn");
+export const drawGraph = (canvas, graph, preview = false) => {
   const ctx = canvas.getContext("2d");
 
   // Clear the canvas first
@@ -20,7 +19,7 @@ export const drawGraph = (canvas, graph, inverse = false) => {
 
   // Loop through the edges and draw lines
   for (let i = 0; i < graph.edges.length; ++i) {
-    ctx.strokeStyle = graph.edges[i].color; // TODO: Use node's color and size
+    ctx.strokeStyle = preview ? "#999" : graph.edges[i].color; // TODO: Use node's color and size
     const sourceId = graph.edges[i].source;
     const targetId = graph.edges[i].target;
     const source = graph.nodes.find((n) => n.id === sourceId);
@@ -39,8 +38,8 @@ export const drawGraph = (canvas, graph, inverse = false) => {
     ctx.ellipse(
       graph.nodes[i].x * canvas.width,
       graph.nodes[i].y * canvas.height,
-      3,
-      3,
+      preview ? 1.5 : 3,
+      preview ? 1.5 : 3,
       0,
       0,
       2 * Math.PI

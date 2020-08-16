@@ -32,13 +32,12 @@ export default class TspRunner {
     this.previousBestScore = 0;
     this.generation = 1;
 
-    console.log("Distance is " + -1 * this.fitnessFunction(this.best));
+    // console.log("Distance is " + -1 * this.fitnessFunction(this.best));
   }
 
   evolve() {
     return new Promise((resolve) => {
       for (var i = 0; i < GENERATIONS_PER_CYCLE; i++) {
-        console.log("Generation " + this.generation++);
         this.geneticAlgorithm.evolve();
       }
       var score = this.geneticAlgorithm.bestScore();
@@ -46,8 +45,6 @@ export default class TspRunner {
       this.previousBestScore = score;
 
       this.best = this.geneticAlgorithm.best();
-
-      console.log("Distance is " + -1 * score);
 
       resolve({
         best: this.best,

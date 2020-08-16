@@ -34,8 +34,13 @@ const colors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "a", "b", "c"].map(
   (k) => `#${k}${k}${k}`
 );
 
+let genNumber = 0;
+
 document.querySelector("button").addEventListener("click", () => {
   tspRunner.evolve().then(({ best, scoredPopulation }) => {
+    genNumber += 10;
+    document.querySelector("#generation-label").innerHTML =
+      "Generation " + genNumber;
     if (!graph.edges.length) {
       graph.edges = [];
       for (let i = 0; i < best.length; i++) {
@@ -91,7 +96,6 @@ document.querySelector("button").addEventListener("click", () => {
 
     // Get the aspect ratio
     const canvasAspectRatio = mainGraphCanvas.width / mainGraphCanvas.height;
-    // console.log(canvasAspectRatio);
 
     // console.log(scoredPopulation);
     // Get the top 5 of the population and draw them
@@ -102,19 +106,15 @@ document.querySelector("button").addEventListener("click", () => {
       .slice(0, 5);
 
     for (let i = 0; i < top5.length; ++i) {
-      // console.log(`.top-${i + 1}`);
       const x = document.querySelector(`.top-${i + 1}`);
 
       const scoreContainer = document.querySelector(`.top-${i + 1} .score`);
       const canvas = x.querySelector("canvas");
-      console.log("canvas", canvas);
-      // TODO: Figure this one out
       canvas.width = canvas.getBoundingClientRect().width;
       canvas.height = canvas.getBoundingClientRect().width / canvasAspectRatio;
-      // canvas.height = canvas.width / canvasAspectRatio;
       scoreContainer.innerHTML = "Score: " + ~~(-1 * top5[i].score * 1000);
       const rg = generateGraphFromPhenotype(graph, top5[i].phenotype);
-      drawGraph(canvas, rg);
+      drawGraph(canvas, rg, true);
     }
   });
 });
